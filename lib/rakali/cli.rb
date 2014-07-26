@@ -4,7 +4,7 @@ require 'open3'
 require 'json-schema'
 require 'json'
 
-class Cli < Thor
+class CLI < Thor
   def self.exit_on_failure?
     true
   end
@@ -129,4 +129,4 @@ Specify the user data directory to
   default_task :pandoc
 end
 
-Cli.start
+CLI.start
