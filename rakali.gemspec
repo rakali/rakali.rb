@@ -16,10 +16,10 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'thor', '~> 0.19.1'
   s.add_dependency 'json-schema', '~> 2.2.4'
-  s.add_development_dependency 'rake'
+  s.add_development_dependency 'rake', '~> 0'
   s.add_development_dependency "rspec", '~> 2.6'
-  s.add_development_dependency "cucumber"
-  s.add_development_dependency "aruba"
+  s.add_development_dependency "cucumber", '~> 1.3.15'
+  s.add_development_dependency "aruba", '~> 0'
 
   s.files       = Dir.glob("lib/**/*.rb")
   s.executables = ["rakali"]
