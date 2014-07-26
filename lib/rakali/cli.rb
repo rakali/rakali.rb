@@ -131,4 +131,4 @@ module Rakali
   end
 end
 
-CLI.start
+Rakali::CLI.start
