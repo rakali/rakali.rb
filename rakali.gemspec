@@ -14,11 +14,11 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = ">= 1.3.6"
 
-  s.add_dependency 'thor', '~> 0.19.1'
-  s.add_dependency 'json-schema', '~> 2.2.4'
+  s.add_dependency 'thor', '~> 0.19'
+  s.add_dependency 'json-schema', '~> 2.2'
   s.add_development_dependency 'rake', '~> 0'
   s.add_development_dependency "rspec", '~> 2.6'
-  s.add_development_dependency "cucumber", '~> 1.3.15'
+  s.add_development_dependency "cucumber", '~> 1.3'
   s.add_development_dependency "aruba", '~> 0'
 
   s.files       = Dir.glob("lib/**/*.rb")
