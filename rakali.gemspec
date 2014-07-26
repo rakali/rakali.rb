@@ -20,4 +20,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec", '~> 2.6'
 
   s.files       = Dir.glob("lib/**/*.rb")
+  s.executables = Dir.glob("bin/*")
 end

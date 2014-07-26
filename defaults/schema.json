@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Default",
+  "description": "The default Pandoc schema",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "unMeta": {
+          "type": "object"
+        }
+      }
+    },
+    {
+      "type": "array"
+    }
+  ]
+}
