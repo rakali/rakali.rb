@@ -18,7 +18,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'json-schema', '~> 2.2.4'
   s.add_development_dependency 'rake'
   s.add_development_dependency "rspec", '~> 2.6'
+  s.add_development_dependency "cucumber"
+  s.add_development_dependency "aruba"
 
   s.files       = Dir.glob("lib/**/*.rb")
-  s.executables = Dir.glob("bin/*")
+  s.executables = ["rakali"]
 end
