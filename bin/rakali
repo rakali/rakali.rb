@@ -1,3 +1,5 @@
 #!/usr/bin/env ruby
 
 require File.expand_path("../../lib/rakali", __FILE__)
+
+Rakali::CLI.start
