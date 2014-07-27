@@ -1,0 +1,14 @@
+rvm:
+  - 1.9.3
+  - 2.1.0
+
+script: bundle exec rake
+
+deploy:
+  provider: rubygems
+  api_key:
+    secure: Gcr3lbeTuQW0MXpO9sh2lnYN4EY9FFLaBhF9RK99JjGUYAm7HR70yWM/EhAThWtfjVhzwcjzOJ6RrGE401zVRUsye8GTMXA5d7USx1KGGmWNRG5cYTCBWhymHXv4vfSfMp3CP2FgyfcTigXu8yHh18ONpHIhbBuZNx1DliBEPgU=
+  gem: rakali
+  on:
+    tags: true
+    repo: rakali/rakali.rb
