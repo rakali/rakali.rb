@@ -8,7 +8,7 @@ module Rakali
 
     def initialize(options = {})
       if $stdin.tty?
-        input = options.fetch(:read, '')
+        input = options.fetch(:file, '')
         input = File.exists?(input) ? IO.read(input) : "[]"
       else
         input = $stdin.read
@@ -24,7 +24,7 @@ module Rakali
     end
 
     def valid?
-      errors.size == 0
+      errors == []
     end
 
     def to_json

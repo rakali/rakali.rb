@@ -12,14 +12,14 @@ describe Rakali::Document do
     end
 
     it "should validate with minimal input via file" do
-      options = { read: fixture_path + 'minimal.json' }
+      options = { file: fixture_path + 'minimal.json' }
       subject = Rakali::Document.new(options)
       subject.valid?.should be true
       subject.errors.should be_empty
     end
 
     it "should not validate with minimal input and extended schema" do
-      options = { read: fixture_path + 'minimal.json', schema: schemata_path + 'jekyll.json' }
+      options = { file: fixture_path + 'minimal.json', schema: schemata_path + 'jekyll.json' }
       subject = Rakali::Document.new(options)
       subject.valid?.should be false
       subject.errors.length.should == 2
@@ -28,7 +28,7 @@ describe Rakali::Document do
     end
 
     it "should validate with extended input and extended schema" do
-      options = { read: fixture_path + 'jekyll.json', schema: schemata_path + 'jekyll.json' }
+      options = { file: fixture_path + 'jekyll.json', schema: schemata_path + 'jekyll.json' }
       subject = Rakali::Document.new(options)
       subject.valid?.should be true
       subject.errors.should be_empty
