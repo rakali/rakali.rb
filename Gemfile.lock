@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rakali (0.0.4)
+    rakali (0.0.5)
       json-schema (~> 2.2)
       thor (~> 0.19)
 
