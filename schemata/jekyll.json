@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Jekyll",
+  "description": "Jekyll static site generator",
+
+  "definitions": {
+    "tags": {
+      "type": "object",
+      "properties": {
+        "c": {"type": "array"}
+      }
+    }
+  },
+
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "unMeta": {
+          "type": "object",
+          "properties": {
+            "title": {"type": "object"},
+            "layout": {"type": "object"},
+            "tags": { "$ref": "#/definitions/tags" }
+          },
+          "required": ["title","layout"]
+        }
+      }
+    },
+    {
+      "type": "array"
+    }
+  ]
+}

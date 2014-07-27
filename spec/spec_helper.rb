@@ -8,8 +8,12 @@ RSpec.configure do |config|
     ARGV.replace []
   end
 
-  config.expect_with :rspec do |c|
-    c.syntax = :expect
+  def fixture_path
+    File.expand_path("../fixtures", __FILE__) + '/'
+  end
+
+  def schemata_path
+    File.expand_path("../../schemata", __FILE__) + '/'
   end
 
   # This code was adapted from Thor, available under MIT-LICENSE
