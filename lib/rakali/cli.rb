@@ -1,8 +1,4 @@
-#!/usr/bin/env ruby
-require "thor"
 require 'open3'
-require 'json-schema'
-require 'json'
 
 module Rakali
   class CLI < Thor
@@ -104,27 +100,6 @@ module Rakali
         output = stdout.read
       end
       puts output
-    end
-
-    desc "validate", "validate STDIN or FILE against SCHEMA"
-
-    method_option :file, :aliases => "-f", :banner => "FILE", :desc => "Path to Pandoc JSON file"
-    method_option :schema, :aliases => "-s", :desc => "Path to JSON validator schema", :default => "defaults/schema.json"
-
-    def validate
-      if STDIN.tty?
-        data = options[:file] && File.exists?(options[:file]) ? IO.read(options[:file]) : nil
-      else
-        data = STDIN.read
-      end
-      raise Thor::Error, set_color("Error: no input via STDIN or FILE", :red) if data.nil?
-
-      schema = IO.read(options[:schema])
-      errors = JSON::Validator.fully_validate(schema, data)
-
-      raise Thor::Error, set_color("Error: input did not validate with schema #{options[:schema]}\n" + errors.join("\n"), :red) if errors.size > 0
-
-      say data
     end
 
     default_task :pandoc
