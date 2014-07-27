@@ -102,7 +102,7 @@ module Rakali
       puts output
     end
 
-    default_task :pandoc
+    # default_task :pandoc
   end
 end
 

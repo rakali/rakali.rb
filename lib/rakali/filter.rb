@@ -1,3 +1,5 @@
+require 'rakali/utils'
+
 module Rakali
   class Filter < Thor
     desc "filter", "filter STDIN or FILE with FILTER"
@@ -6,11 +8,7 @@ module Rakali
     method_option :filter, :aliases => "-f", :desc => "Path to FILTER", :default => "filters/default"
 
     def filter
-      if $stdin.tty?
-        data = options[:read] && File.exists?(options[:read]) ? IO.read(options[:read]) : nil
-      else
-        data = $stdin.read
-      end
+      data = read_stdin(options)
       raise Thor::Error, "Error: no input via STDIN or FILE" if data.nil?
 
       filter = IO.read("#{options[:filter]}.json")
