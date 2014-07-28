@@ -12,6 +12,17 @@ module Rakali
     method_option :schema, :aliases => "-s", :desc => "Path to JSON validator SCHEMA", :default => "schemata/default.json"
 
     def read
+
+    end
+
+    desc "pandoc FILE", "an example task"
+
+    method_option :from, :aliases => "-f", :banner => "FORMAT"
+    method_option :version, :aliases => "-v", :type => :boolean, :desc => "Print version."
+    method_option :help, :aliases => "-h", :type => :boolean, :desc => "Show usage message."
+    method_option :schema, :aliases => "-s", :desc => "Path to JSON validator SCHEMA", :default => "schemata/default.json"
+
+    def pandoc
       document = Rakali::Document.new(options)
 
       if document.valid?
@@ -21,8 +32,6 @@ module Rakali
         raise Thor::Error, set_color(message, :red)
       end
     end
-
-  #   desc "pandoc", "an example task"
 
   #   method_option :from, :aliases => "-f", :banner => "FORMAT", :desc => <<-EOF
   # Specify input format. FORMAT can be
@@ -135,6 +144,6 @@ module Rakali
   #     say data
   #   end
 
-    # default_task :pandoc
+    default_task :pandoc
   end
 end
