@@ -5,41 +5,34 @@ require 'open3'
 module Rakali
   class Document
 
-    attr_accessor :content, :schema, :errors, :to_json
+    attr_accessor :input, :content, :output, :schema, :errors
 
-    def initialize(options = {})
-      if $stdin.tty?
-        input = options.fetch(:file, '')
-        if File.exists?(input)
-          input = IO.read(input)
-        else
-          @errors = ["No such file or directory"]
-          input = nil
-        end
-      else
-        input = $stdin.read
+    def initialize(input, options = {})
+      begin
+        schema = options.fetch(:schema, 'schemata/default.json')
+        @schema = IO.read(schema)
+
+        content = IO.read(input)
+        content = convert(content, "-t json")
+        @content = from_json(content)
+
+        @errors = JSON::Validator.fully_validate(@schema, @content)
+
+        basename = File.basename(input).split('.').first
+        output = options.fetch(:output, "#{basename}.html")
+        #@output = convert(content, "-f json -o #{output}")
+      rescue => e
+        @errors = [e.message]
       end
+    end
 
-      output = ''
-      stderr = nil
-      Open3::popen3("pandoc -t json") do |stdin, stdout, stderr|
-        stdin.puts input
+    def convert(string, args)
+      Open3::popen3("pandoc #{args}") do |stdin, stdout, stderr, wait_thr|
+        stdin.puts string
         stdin.close
-        output = stdout.read
-      end
 
-      schema = options.fetch(:schema, 'schemata/default.json')
-      schema = File.exists?(schema) ? IO.read(schema) : IO.read('schemata/default.json')
-
-      @content = from_json(output)
-      @schema = from_json(schema)
-
-      if stderr
-        @errors = [stderr]
-      elsif content.nil? || schema.nil?
-        @errors = ["No input found"]
-      else
-        @errors = JSON::Validator.fully_validate(schema, to_json)
+        raise StandardError, stderr.read if wait_thr.value.exitstatus > 0
+        stdout.read
       end
     end
 

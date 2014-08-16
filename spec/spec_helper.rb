@@ -31,6 +31,28 @@ RSpec.configure do |config|
     result
   end
 
+  def capture_stdout(&block)
+    original_stdout = $stdout
+    $stdout = fake = StringIO.new
+    begin
+      yield
+    ensure
+      $stdout = original_stdout
+    end
+    fake.string
+  end
+
+  def capture_stderr(&block)
+    original_stderr = $stderr
+    $stderr = fake = StringIO.new
+    begin
+      yield
+    ensure
+      $stderr = original_stderr
+    end
+    fake.string
+  end
+
   # This code was adapted from Ruby on Rails, available under MIT-LICENSE
   # Copyright (c) 2004-2013 David Heinemeier Hansson
   def silence_warnings
