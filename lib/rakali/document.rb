@@ -28,7 +28,7 @@ module Rakali
 
         # add pandoc options from config
         options = @config.fetch('options') || {}
-        @options = options.map { |k,v| "--#{k}=#{v}" }.join(" ")
+        @options = options.map { |k,v| "--#{k}='#{v}'" }.join(" ")
 
         # add pandoc variables from config
         variables = @config.fetch('variables') || {}
