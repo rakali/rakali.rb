@@ -2,5 +2,7 @@ from:
   folder: examples
   format: docx
 to:
-  format: epub
+  format: pdf
 merge: false
+options:
+  latex-engine: xelatex

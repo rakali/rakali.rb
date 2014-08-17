@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rakali (0.1.0)
+    rakali (0.1.1)
       colorator (~> 0.1)
       json-schema (~> 2.2)
       safe_yaml (~> 1.0)
