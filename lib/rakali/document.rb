@@ -46,10 +46,8 @@ module Rakali
 
     def convert(string = nil, dir, args)
       Open3::popen3("pandoc #{args}", chdir: dir) do |stdin, stdout, stderr, wait_thr|
-        unless string.nil?
-          stdin.puts string
-          stdin.close
-        end
+        stdin.puts string unless string.nil?
+        stdin.close
 
         # abort with log message if exit_status of command not 0
         Rakali.logger.abort_with "Fatal:", "#{stderr.read}." if wait_thr.value.exitstatus > 0
