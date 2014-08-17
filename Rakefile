@@ -15,10 +15,12 @@ namespace :repo do
       sh "git config --global user.name '#{ENV['GIT_NAME']}'"
       sh "git config --global user.email '#{ENV['GIT_EMAIL']}'"
       sh "git config --global push.default simple"
+
+      sh "git remote rm origin"
+      sh "git remote add origin https://#{ENV['GIT_NAME']}:$#{ENV['GH_TOKEN']}@github.com/rakali/rakali.rb.git"
     end
 
     # Commit and push to github
-    sha = `git log`.match(/[a-z0-9]{40}/)[0]
     sh "git add --all ."
     sh "git commit -m 'Committing converted files.'"
     sh "git push origin master --quiet"
