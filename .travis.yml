@@ -11,6 +11,7 @@ install:
 script:
   - bundle exec rake
   - bundle exec rakali convert .rakali.yml
+  - bundle exec rake repo:push
 
 deploy:
   provider: rubygems

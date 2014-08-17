@@ -1,8 +1,6 @@
 pkg/*
 *.gem
 .bundle
-*.html
-*.epub
-*.jats
 spec/fixtures/*.html
 spec/fixtures/*.docx
+spec/fixtures/*.epub

@@ -1,6 +1,6 @@
 from:
   folder: examples
-  format: md
+  format: docx
 to:
   format: epub
-merge: true
+merge: false
