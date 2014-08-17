@@ -28,11 +28,11 @@ module Rakali
 
         # add pandoc options from config
         options = @config.fetch('options') || {}
-        @options = options.map { |k,v| "--#{k}='#{v}'" }.join(" ")
+        @options = options.map { |k,v| "--#{k}=#{v}" }.join(" ")
 
         # add pandoc variables from config
         variables = @config.fetch('variables', nil) || {}
-        @variables = variables.map { |k,v| "--variable #{k}=#{v}" }.join(" ")
+        @variables = variables.map { |k,v| "--variable #{k}='#{v}'" }.join(" ")
 
         # use citeproc-pandoc if citations flag is set
         bibliography = @config.fetch('citations') ? "-f citeproc-pandoc " : ""
