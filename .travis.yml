@@ -1,18 +1,14 @@
 language: haskell
-
 rvm:
-  - 1.9.3
-  - 2.1.2
-
+- 1.9.3
+- 2.1.2
 install:
-  - travis_retry cabal install pandoc pandoc-citeproc
-  - travis_retry bundle install
-
+- travis_retry cabal install pandoc pandoc-citeproc
+- travis_retry bundle install
 script:
-  - bundle exec rake
-  - bundle exec rakali convert .rakali.yml
-  - bundle exec rake repo:push
-
+- bundle exec rake
+- bundle exec rakali convert .rakali.yml
+- bundle exec rake repo:push
 deploy:
   provider: rubygems
   api_key:
@@ -21,3 +17,8 @@ deploy:
   on:
     tags: true
     repo: rakali/rakali.rb
+env:
+  global:
+  - secure: iKVr4pGEGYm6mrXsRirAmexMWnNfEiuoVG34XLkrBjBTEEMta4Ir/DfpfT3WEAnf/pPsFljr4Y4kAtKoK0Sebfw5Ou+Nf8nDY92/hNuql61jSLp98ULaeoGOC7m/6+5n7xugwYAVTv07SuOc0QZbZK9FyO2E1a6xC4sMxPRIxpw=
+  - secure: PK0tiAQ5IP4aRm6MgNo15WvflZNRg+fPeGsgNw6rpRfe617JIhlj1UGZL1SaSsglkAfN5gLC4d7qQ6D8TGyGAsWT8F2i0DJVKgswfNoeAMzZv9majMxBv7YXweELPswjdAXlBBnlETStgkFbPAZX8wWkfUS0fDcGWH99jWxiT3E=
+  - secure: Ev2TohMLF0b5bfE7Gj2ig8LGQ4eJK1IYZlfNyE6+56DkXO59pnPeHr2fvy3OFC4ADcOTxAeMYAy4U/WRWcaufK0VMR8Gij7dBtysKNn7vll5qBczulcC9HvBBkd80RupW4YFb/L6mwKamod2csSU1JamuYRgLSWt7y2nZk+aRlI=

@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec", '~> 2.6'
   s.add_development_dependency "cucumber", '~> 1.3'
   s.add_development_dependency "aruba", '~> 0'
+  s.add_development_dependency "codeclimate-test-reporter", '~> 0'
 
   s.files       = `git ls-files`.split($/)
   s.executables = ["rakali"]
