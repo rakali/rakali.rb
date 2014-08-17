@@ -1,8 +1,8 @@
 pkg/*
 *.gem
 .bundle
-.md
-.html
-.epub
-.docx
-.jats
+*.md
+*.html
+*.epub
+*.docx
+*.jats
