@@ -18,17 +18,20 @@ module Rakali
         @source = File.basename(document)
         @destination = @source.sub(/\.#{@from_format}$/, ".#{@to_format}")
 
-        # convert source document into JSON version of native AST
-        @content = convert(nil, @from_folder, "#{@source} -t json")
+        # use citeproc-pandoc if citations flag is set
+        bibliography = @config.fetch('citations') ? "-f citeproc-pandoc" : ""
 
-        # read in JSON schema
-        @schema = IO.read(@config.fetch('schema'))
+        # convert source document into JSON version of native AST
+        @content = convert(nil, @from_folder, "#{@source} #{bibliography}-t json")
+
+        # read in JSON schema, use included schemata folder if no folder is given
+        @schema = scheme
 
         # validate JSON against schema and report errors
         @errors = validate
 
         # convert to destination document from JSON version of native AST
-        @output = convert(@content, @to_folder, "-f json -o #{@destination}")
+        @output = convert(@content, @to_folder, "-f json #{bibliography}-o #{@destination}")
         Rakali.logger.abort_with "Fatal:", "Writing file #{@destination} failed" unless created?
 
         if @errors.empty?
@@ -60,6 +63,16 @@ module Rakali
 
       # otherwise return stdout
       captured_stdout
+    end
+
+    def scheme
+      schema = @config.fetch('schema')
+      if schema.include?("/")
+        IO.read(schema)
+      else
+        schemata_folder = File.expand_path("../../../schemata", __FILE__)
+        IO.read("#{schemata_folder}/#{schema}")
+      end
     end
 
     def validate

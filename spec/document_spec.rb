@@ -26,7 +26,7 @@ describe Rakali::Document do
     it "should not validate with empty input and extended schema" do
       document = fixture_path + 'empty.md'
       config = Rakali::Utils.deep_merge_hashes(Rakali::Converter::DEFAULTS,
-        { 'from' => { 'folder' => fixture_path }, 'schema' => 'schemata/jekyll.json' })
+        { 'from' => { 'folder' => fixture_path }, 'schema' => 'jekyll.json' })
       subject = Rakali::Document.new(document, config)
       subject.valid?.should be_falsey
       subject.errors.length.should == 2
@@ -37,14 +37,14 @@ describe Rakali::Document do
     it "should not validate with empty input and extended schema and raise error" do
       document = fixture_path + 'empty.md'
       config = Rakali::Utils.deep_merge_hashes(Rakali::Converter::DEFAULTS,
-        { 'from' => { 'folder' => fixture_path }, 'schema' => 'schemata/jekyll.json', 'strict' => true })
+        { 'from' => { 'folder' => fixture_path }, 'schema' => 'jekyll.json', 'strict' => true })
       lambda { Rakali::Document.new(document, config) }.should raise_error SystemExit
     end
 
     it "should validate with extended input and extended schema" do
       document = fixture_path + 'jekyll.md'
       config = Rakali::Utils.deep_merge_hashes(Rakali::Converter::DEFAULTS,
-        { 'from' => { 'folder' => fixture_path }, 'schema' => 'schemata/jekyll.json' })
+        { 'from' => { 'folder' => fixture_path }, 'schema' => 'jekyll.json' })
       subject = Rakali::Document.new(document, config)
       subject.valid?.should be_truthy
       subject.errors.should be_empty

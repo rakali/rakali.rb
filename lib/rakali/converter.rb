@@ -7,8 +7,10 @@ module Rakali
     DEFAULTS = {
       'from'          => { 'format' => 'md' },
       'to'            => { 'folder' => nil, 'format' => 'html' },
-      'schema'        => 'schemata/default.json',
-      'strict'        => false
+      'schema'        => 'default.json',
+      'citations'     => false,
+      'strict'        => false,
+      'merge'         => false
     }
 
     attr_accessor :config, :documents, :errors
@@ -26,7 +28,14 @@ module Rakali
         from_folder = @config.fetch('from').fetch('folder')
         from_format = @config.fetch('from').fetch('format')
         documents = Dir.glob("#{from_folder}/*.#{from_format}")
-        documents.each { |document| Rakali::Document.new(document, @config) }
+
+        # merge all documents into one file if merge flag is set
+        # otherwise iterate through each file in source folder
+        if @config.fetch('merge')
+          Rakali::Document.new(documents, @config)
+        else
+          documents.each { |document| Rakali::Document.new(document, @config) }
+        end
       rescue KeyError => e
         Rakali.logger.abort_with "Fatal:", "Configuration #{e.message}."
       rescue => e
