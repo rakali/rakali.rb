@@ -2,7 +2,10 @@ from:
   folder: examples
   format: docx
 to:
-  format: pdf
+  format: html
 merge: false
 options:
   latex-engine: xelatex
+variables:
+  mainfont: 'Minion Pro'
+  sansfont: 'Myriad Pro'
