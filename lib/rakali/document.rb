@@ -68,7 +68,10 @@ module Rakali
       end
 
       # abort with log message if non-zero exit_status
-      Rakali.logger.abort_with "Fatal:", "#{captured_stderr}." unless exit_status.success?
+      unless exit_status.success?
+        Rakali.logger.error "Pandoc Error:", "Arguments #{args}."
+        Rakali.logger.abort_with "Fatal:", "#{captured_stderr}."
+      end
 
       # otherwise return stdout
       captured_stdout
