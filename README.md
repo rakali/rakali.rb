@@ -40,21 +40,16 @@ strict: false
 merge: false
 ```
 
-The only required key for the input yaml file is `from` `folder`, and you can override any key in the default file.
+The only required key for the input yaml file is `from` `folder` (missing in the default file), and you can override any key in the default file.
 
 * **schema**: JSON schema used for validation. Use `your_folder/schema.json` for a custom schema, or use one of the built-in schemata (see [pandoc-schemata](https://github.com/rakali/pandoc-schemata) for a list.)
 * **citations**: include `-f citeproc-pandoc` for citation formatting
 * **strict**: abort conversion on validation errors
 * **merge**: merge all input files into a single file
 
-To integrate rakali into a continuous integration environment such as [Travis CI](https://travis-ci.org), add a configuration file (e.g. `.rakali.yml`) into the root folder of your repo and include the following line in your `.travis.yml` file:
+Validation against **JSON Schema** also works directly with Pandoc, generate a JSON representation of the internal Pandoc document format (abstract syntax tree or AST) with `pandoc -o file.json`, and use a JSON Schema file for validation. If possible, please contribute your schema files to the [pandoc-schemata](https://github.com/rakali/pandoc-schemata).
 
-```
-language: haskell
-script:
-  - gem install rakali
-  - rakali convert .rakali.yml
-```
+To integrate rakali into a continuous integration environment such as [Travis CI](https://travis-ci.org), add a configuration file (e.g. `.rakali.yml`) into the root folder of your repo, install Pandoc and the rakali gem and run `rakali convert .rakali.yml`. Look at `.travis.yml`, `.rakali.yml` and the `examples` folder in this repo for a working example.
 
 ## Feedback
 
