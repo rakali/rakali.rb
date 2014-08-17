@@ -9,6 +9,7 @@ describe Rakali::Document do
       subject = Rakali::Document.new(document, config)
       subject.valid?.should be_truthy
       subject.errors.should be_empty
+      subject.created?.should be_truthy
     end
   end
 

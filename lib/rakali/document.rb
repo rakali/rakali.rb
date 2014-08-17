@@ -3,24 +3,24 @@
 module Rakali
   class Document
 
-    attr_accessor :config, :source, :destination, :content, :schema, :errors
+    attr_accessor :config, :source, :destination, :content, :schema, :errors, :to_folder
 
     def initialize(document, config)
       begin
         @config = config
 
-        from_folder = @config.fetch('from').fetch('folder')
-        from_format = @config.fetch('from').fetch('format')
-        to_folder = @config.fetch('to').fetch('folder') || from_folder
-        to_format = @config.fetch('to').fetch('format')
+        @from_folder = @config.fetch('from').fetch('folder')
+        @from_format = @config.fetch('from').fetch('format')
+        @to_folder = @config.fetch('to').fetch('folder') || @from_folder
+        @to_format = @config.fetch('to').fetch('format')
         #config_path = File.expand_path("../config.yml", __FILE__)
 
         # for destination filename use source name with new extension
         @source = File.basename(document)
-        @destination = @source.sub(/\.#{from_format}$/, ".#{to_format}")
+        @destination = @source.sub(/\.#{@from_format}$/, ".#{@to_format}")
 
         # convert source document into JSON version of native AST
-        @content = convert(nil, "#{from_folder}/#{@source} -t json")
+        @content = convert(nil, "#{@from_folder}/#{@source} -t json")
 
         # read in JSON schema
         @schema = IO.read(@config.fetch('schema'))
@@ -29,7 +29,8 @@ module Rakali
         @errors = validate
 
         # convert to destination document from JSON version of native AST
-        @output = convert(@content, "-f json -o #{to_folder}/#{@destination}")
+        @output = convert(@content, "-f json -o #{@to_folder}/#{@destination}")
+        Rakali.logger.abort_with "Fatal:", "Writing file #{@destination} failed" unless created?
 
         if @errors.empty?
           Rakali.logger.info "Success:", "Converted file #{@source} to file #{@destination}."
@@ -71,6 +72,14 @@ module Rakali
 
     def valid?
       errors == []
+    end
+
+    def created?
+      # file exists
+      return false unless File.exist?("#{@to_folder}/#{@destination}")
+
+      # file was created in the last 5 seconds
+      Time.now - File.mtime("#{@to_folder}/#{@destination}") < 5
     end
 
     def from_json(string)
