@@ -10,7 +10,8 @@ module Rakali
       'schema'        => 'default.json',
       'citations'     => false,
       'strict'        => false,
-      'merge'         => false
+      'merge'         => false,
+      'options'       => {}
     }
 
     attr_accessor :config, :documents, :errors

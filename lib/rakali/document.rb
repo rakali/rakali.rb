@@ -3,7 +3,7 @@
 module Rakali
   class Document
 
-    attr_accessor :config, :source, :destination, :content, :schema, :errors, :to_folder
+    attr_accessor :config, :source, :destination, :content, :schema, :errors, :options, :to_folder
 
     def initialize(document, config)
       begin
@@ -29,8 +29,9 @@ module Rakali
         # use citeproc-pandoc if citations flag is set
         bibliography = @config.fetch('citations') ? "-f citeproc-pandoc" : ""
 
+
         # convert source document into JSON version of native AST
-        @content = convert(nil, @from_folder, "#{@source} #{bibliography}-t json")
+        @content = convert(nil, @from_folder, "#{@source} #{bibliography} -t json #{@options}")
 
         # read in JSON schema, use included schemata folder if no folder is given
         @schema = scheme
@@ -39,7 +40,7 @@ module Rakali
         @errors = validate
 
         # convert to destination document from JSON version of native AST
-        @output = convert(@content, @to_folder, "-f json #{bibliography}-o #{@destination}")
+        @output = convert(@content, @to_folder, "-f json #{bibliography} -o #{@destination} #{@options}")
         Rakali.logger.abort_with "Fatal:", "Writing file #{@destination} failed" unless created?
 
         if @errors.empty?
@@ -105,6 +106,11 @@ module Rakali
 
       # file was created in the last 5 seconds
       Time.now - File.mtime("#{@to_folder}/#{@destination}") < 5
+    end
+
+    def options
+      opts = @config.fetch('options') || {}
+      opts.map {|k,v| "#{k}=#{v}" }.join(" ")
     end
 
     def from_json(string)
