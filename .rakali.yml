@@ -1,2 +1,5 @@
 from:
   folder: examples
+  format: docx
+to:
+  format: epub
