@@ -110,7 +110,7 @@ module Rakali
 
     def options
       opts = @config.fetch('options') || {}
-      opts.map {|k,v| "#{k}=#{v}" }.join(" ")
+      opts.map { |k,v| "--#{k}=#{v}" }.join(" ")
     end
 
     def from_json(string)
