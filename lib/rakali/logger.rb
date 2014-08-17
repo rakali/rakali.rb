@@ -77,7 +77,7 @@ module Rakali
     #
     # Returns the formatted message
     def message(topic, message)
-      formatted_topic(topic) + message.to_s.gsub(/---\n/, '')
+      formatted_topic(topic) + message.to_s
     end
 
     # Public: Format the topic

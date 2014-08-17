@@ -8,12 +8,7 @@ module Rakali
       'from'          => { 'format' => 'md' },
       'to'            => { 'folder' => nil, 'format' => 'html' },
       'schema'        => 'schemata/default.json',
-      'strict'        => false,
-      'templates'     => 'rakali/templates',
-      'csl'           => 'rakali/csl',
-      'bibliography'  => 'rakali/bibliography',
-      'filters'       => 'rakali/filters',
-      'writers'       => 'rakali/writers'
+      'strict'        => false
     }
 
     attr_accessor :config, :documents, :errors
@@ -26,7 +21,7 @@ module Rakali
         @config = Utils.deep_merge_hashes(DEFAULTS, config)
 
         # print configuration
-        Rakali.logger.info "Starting:", "Reading configuration... \n#{to_yaml}"
+        Rakali.logger.info "Configuration:", to_yaml
 
         from_folder = @config.fetch('from').fetch('folder')
         from_format = @config.fetch('from').fetch('format')
@@ -57,7 +52,8 @@ module Rakali
     end
 
     def to_yaml
-      config.to_yaml
+      yaml = config.to_yaml.gsub(/---\n/, '').split("\n")
+      yaml.join("\n                    ")
     end
   end
 end
