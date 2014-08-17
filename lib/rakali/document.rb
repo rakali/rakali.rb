@@ -3,15 +3,24 @@
 module Rakali
   class Document
 
-    attr_accessor :config, :basename, :content, :schema, :errors
+    attr_accessor :config, :source, :destination, :content, :schema, :errors
 
     def initialize(document, config)
       begin
         @config = config
-        @basename = File.basename(document)
 
-        # convert input document into JSON version of native AST
-        @content = convert(IO.read(document), "-t json")
+        from_folder = @config.fetch('from').fetch('folder')
+        from_format = @config.fetch('from').fetch('format')
+        to_folder = @config.fetch('to').fetch('folder') || from_folder
+        to_format = @config.fetch('to').fetch('format')
+        #config_path = File.expand_path("../config.yml", __FILE__)
+
+        # for destination filename use source name with new extension
+        @source = File.basename(document)
+        @destination = @source.sub(/\.#{from_format}$/, ".#{to_format}")
+
+        # convert source document into JSON version of native AST
+        @content = convert(nil, "#{from_folder}/#{@source} -t json")
 
         # read in JSON schema
         @schema = IO.read(@config.fetch('schema'))
@@ -19,16 +28,27 @@ module Rakali
         # validate JSON against schema and report errors
         @errors = validate
 
-        #@output = convert(content, "-f json -o #{output}")
+        # convert to destination document from JSON version of native AST
+        @output = convert(@content, "-f json -o #{to_folder}/#{@destination}")
+
+        if @errors.empty?
+          Rakali.logger.info "Success:", "Converted file #{@source} to file #{@destination}."
+        else
+          Rakali.logger.warn "With Errors:", "Converted file #{@source} to file #{@destination}."
+        end
+      rescue KeyError => e
+        Rakali.logger.abort_with "Fatal:", "Configuration #{e.message}."
       rescue => e
         Rakali.logger.abort_with "Fatal:", "#{e.message}."
       end
     end
 
-    def convert(string, args)
+    def convert(string = nil, args)
       Open3::popen3("pandoc #{args}") do |stdin, stdout, stderr, wait_thr|
-        stdin.puts string
-        stdin.close
+        unless string.nil?
+          stdin.puts string
+          stdin.close
+        end
 
         # abort with log message if exit_status of command not 0
         Rakali.logger.abort_with "Fatal:", "#{stderr.read}." if wait_thr.value.exitstatus > 0
@@ -42,10 +62,10 @@ module Rakali
       return [] if errors.empty?
 
       if @config.fetch('strict', false)
-        errors.each { |error| Rakali.logger.error "Validation Error:", "#{error} for file #{basename}" }
-        Rakali.logger.abort_with "Fatal:", "Validation for file #{basename} failed."
+        errors.each { |error| Rakali.logger.error "Validation Error:", "#{error} for file #{source}" }
+        Rakali.logger.abort_with "Fatal:", "Conversion of file #{source} failed."
       else
-        errors.each { |error| Rakali.logger.warn "Validation Error:", "#{error} for file #{basename}" }
+        errors.each { |error| Rakali.logger.warn "Validation Error:", "#{error} for file #{source}" }
       end
     end
 

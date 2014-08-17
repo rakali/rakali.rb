@@ -9,6 +9,7 @@ require 'rakali/version'
 require 'rakali/cli'
 require 'rakali/converter'
 require 'rakali/document'
+require 'rakali/utils'
 require 'rakali/logger'
 
 SafeYAML::OPTIONS[:suppress_warnings] = false
