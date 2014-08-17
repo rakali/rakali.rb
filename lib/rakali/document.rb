@@ -3,7 +3,7 @@
 module Rakali
   class Document
 
-    attr_accessor :config, :source, :destination, :content, :schema, :errors, :options, :to_folder
+    attr_accessor :config, :source, :destination, :content, :schema, :errors, :options, :variables, :to_folder
 
     def initialize(document, config)
       begin
