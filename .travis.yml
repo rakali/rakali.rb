@@ -1,6 +1,12 @@
+language: haskell
+
 rvm:
   - 1.9.3
   - 2.1.2
+
+install:
+  - travis_retry cabal install pandoc pandoc-citeproc
+  - travis_retry bundle install
 
 script: bundle exec rake
 
