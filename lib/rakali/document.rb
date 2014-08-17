@@ -30,11 +30,15 @@ module Rakali
         options = @config.fetch('options') || {}
         @options = options.map { |k,v| "--#{k}=#{v}" }.join(" ")
 
+        # add pandoc variables from config
+        variables = @config.fetch('variables') || {}
+        @variables = variables.map { |k,v| "--variable #{k}=#{v}" }.join(" ")
+
         # use citeproc-pandoc if citations flag is set
         bibliography = @config.fetch('citations') ? "-f citeproc-pandoc " : ""
 
         # convert source document into JSON version of native AST
-        @content = convert(nil, @from_folder, "#{@source} #{bibliography}-t json #{@options}")
+        @content = convert(nil, @from_folder, "#{@source} #{bibliography}-t json #{@options} #{@variables}")
 
         # read in JSON schema, use included schemata folder if no folder is given
         @schema = scheme
@@ -43,7 +47,7 @@ module Rakali
         @errors = validate
 
         # convert to destination document from JSON version of native AST
-        @output = convert(@content, @to_folder, "-f json #{bibliography}-o #{@destination} #{@options}")
+        @output = convert(@content, @to_folder, "-f json #{bibliography}-o #{@destination} #{@options} #{@variables}")
         Rakali.logger.abort_with "Fatal:", "Writing file #{@destination} failed" unless created?
 
         if @errors.empty?
