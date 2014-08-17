@@ -1,0 +1,4 @@
+from:
+  folder: fixtures/minimal
+  format: md
+schema: jekyll.json

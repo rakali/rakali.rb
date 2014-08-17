@@ -3,3 +3,4 @@ from:
   format: docx
 to:
   format: epub
+merge: true

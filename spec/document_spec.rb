@@ -11,6 +11,16 @@ describe Rakali::Document do
       subject.errors.should be_empty
       subject.created?.should be_truthy
     end
+
+    it "should convert multiple files" do
+      documents = Dir.glob("#{fixture_path}/*.md")
+      config = Rakali::Utils.deep_merge_hashes(Rakali::Converter::DEFAULTS,
+        { 'from' => { 'folder' => fixture_path }, 'to' => { 'format' => 'epub' }, 'merge' => true })
+      subject = Rakali::Document.new(documents, config)
+      subject.valid?.should be_truthy
+      subject.errors.should be_empty
+      subject.created?.should be_truthy
+    end
   end
 
   describe "validate" do

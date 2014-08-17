@@ -14,9 +14,17 @@ module Rakali
         @to_folder = @config.fetch('to').fetch('folder') || @from_folder
         @to_format = @config.fetch('to').fetch('format')
 
-        # for destination filename use source name with new extension
-        @source = File.basename(document)
-        @destination = @source.sub(/\.#{@from_format}$/, ".#{@to_format}")
+        # if document is a list of files, concatenate into one input
+        # use to_folder name as filename
+        if document.is_a?(Array)
+          @source = document.map { |file| File.basename(file) }.join(" ")
+          @destination = "#{File.basename(@from_folder)}.#{@to_format}"
+          puts @destination
+        else
+          # otherwise use source name with new extension for destination filename
+          @source = File.basename(document)
+          @destination = @source.sub(/\.#{@from_format}$/, ".#{@to_format}")
+        end
 
         # use citeproc-pandoc if citations flag is set
         bibliography = @config.fetch('citations') ? "-f citeproc-pandoc" : ""
