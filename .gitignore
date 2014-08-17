@@ -1,7 +1,6 @@
 pkg/*
 *.gem
 .bundle
-*.md
 *.html
 *.epub
 *.docx

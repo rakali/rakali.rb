@@ -13,7 +13,6 @@ module Rakali
         @from_format = @config.fetch('from').fetch('format')
         @to_folder = @config.fetch('to').fetch('folder') || @from_folder
         @to_format = @config.fetch('to').fetch('format')
-        #config_path = File.expand_path("../config.yml", __FILE__)
 
         # for destination filename use source name with new extension
         @source = File.basename(document)
@@ -45,15 +44,22 @@ module Rakali
     end
 
     def convert(string = nil, dir, args)
-      Open3::popen3("pandoc #{args}", chdir: dir) do |stdin, stdout, stderr, wait_thr|
+      captured_stdout = ''
+      captured_stderr = ''
+      exit_status = Open3::popen3("pandoc #{args}", chdir: dir) do |stdin, stdout, stderr, wait_thr|
         stdin.puts string unless string.nil?
         stdin.close
 
-        # abort with log message if exit_status of command not 0
-        Rakali.logger.abort_with "Fatal:", "#{stderr.read}." if wait_thr.value.exitstatus > 0
-
-        stdout.read
+        captured_stdout = stdout.read
+        captured_stderr = stderr.read
+        wait_thr.value
       end
+
+      # abort with log message if non-zero exit_status
+      Rakali.logger.abort_with "Fatal:", "#{captured_stderr}." unless exit_status.success?
+
+      # otherwise return stdout
+      captured_stdout
     end
 
     def validate
