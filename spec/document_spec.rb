@@ -20,6 +20,12 @@ describe Rakali::Document do
       subject.errors.last.should match("The property '#/0/unMeta' did not contain a required property of 'layout'")
     end
 
+    it "should not validate with minimal input and extended schema and raise error" do
+      document = fixture_path + 'minimal.md'
+      config = { "schema" => "schemata/jekyll.json", 'strict' => true }
+      lambda { Rakali::Document.new(document, config) }.should raise_error SystemExit
+    end
+
     it "should validate with extended input and extended schema" do
       document = fixture_path + 'jekyll.md'
       config = { "schema" => "schemata/jekyll.json" }
