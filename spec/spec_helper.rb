@@ -12,10 +12,6 @@ RSpec.configure do |config|
     File.expand_path("../fixtures", __FILE__) + '/'
   end
 
-  def schemata_path
-    File.expand_path("../../schemata", __FILE__) + '/'
-  end
-
   # This code was adapted from Thor, available under MIT-LICENSE
   # Copyright (c) 2008 Yehuda Katz, Eric Hodel, et al.
   def capture(stream)

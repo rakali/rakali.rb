@@ -1,4 +1,4 @@
-# This code was adapted from Jekyll, available under MIT-LICENSE
+# This code was taken from Jekyll, available under MIT-LICENSE
 # Copyright (c) 2008-2014 Tom Preston-Werner
 
 module Rakali

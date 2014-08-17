@@ -1,4 +1,4 @@
-require 'open3'
+# encoding: UTF-8
 
 module Rakali
   class CLI < Thor
@@ -9,15 +9,15 @@ module Rakali
     desc "read FILE", "read configuration FILE in yaml format"
 
     def convert(file)
-      document = Rakali::Document.new(file)
+      converter = Rakali::Converter.new(file)
 
       # don't proceed unless input validates against schema
-      unless document.valid?
-        message = "Error: input did not validate with schema #{document.schema["title"]}\n" + document.errors.join("\n")
-        raise Thor::Error, set_color(message, :red)
+      unless converter.valid?
+        message = "Error: input did not validate with schema #{converter.schema["title"]}\n" + converter.errors.join("\n")
+        raise Thor::Error, message
       end
     end
 
-    default_task :pandoc
+    default_task :convert
   end
 end

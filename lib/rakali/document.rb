@@ -1,25 +1,24 @@
-require 'json-schema'
-require 'json'
-require 'open3'
+# encoding: UTF-8
 
 module Rakali
   class Document
 
-    attr_accessor :input, :content, :output, :schema, :errors
+    attr_accessor :config, :content, :schema, :errors
 
-    def initialize(input, options = {})
+    def initialize(document, config)
       begin
-        schema = options.fetch(:schema, 'schemata/default.json')
-        @schema = IO.read(schema)
+        @config = config
 
-        content = IO.read(input)
-        content = convert(content, "-t json")
-        @content = from_json(content)
+        # convert input document into JSON version of native AST
+        @content = convert(IO.read(document), "-t json")
 
+        # read in JSON schema
+        @schema = IO.read(@config['schema'])
+
+        # validate JSON against schema
         @errors = JSON::Validator.fully_validate(@schema, @content)
 
-        basename = File.basename(input).split('.').first
-        output = options.fetch(:output, "#{basename}.html")
+        # basename = File.basename(document).split('.').first
         #@output = convert(content, "-f json -o #{output}")
       rescue => e
         @errors = [e.message]
@@ -31,6 +30,7 @@ module Rakali
         stdin.puts string
         stdin.close
 
+        # raise an error if exit_status of command not 0
         raise StandardError, stderr.read if wait_thr.value.exitstatus > 0
         stdout.read
       end
