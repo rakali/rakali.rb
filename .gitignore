@@ -6,3 +6,5 @@ pkg/*
 *.epub
 *.docx
 *.jats
+spec/fixtures/*.html
+spec/fixtures/*.docx
