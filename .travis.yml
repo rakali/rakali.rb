@@ -8,7 +8,9 @@ install:
   - travis_retry cabal install pandoc pandoc-citeproc
   - travis_retry bundle install
 
-script: bundle exec rake
+script:
+  - bundle exec rake
+  - bundle exec rakali .rakali.yml
 
 deploy:
   provider: rubygems
