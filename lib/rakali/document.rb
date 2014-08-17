@@ -26,12 +26,15 @@ module Rakali
           @destination = @source.sub(/\.#{@from_format}$/, ".#{@to_format}")
         end
 
-        # use citeproc-pandoc if citations flag is set
-        bibliography = @config.fetch('citations') ? "-f citeproc-pandoc" : ""
+        # add pandoc options from config
+        options = @config.fetch('options') || {}
+        @options = options.map { |k,v| "--#{k}=#{v}" }.join(" ")
 
+        # use citeproc-pandoc if citations flag is set
+        bibliography = @config.fetch('citations') ? "-f citeproc-pandoc " : ""
 
         # convert source document into JSON version of native AST
-        @content = convert(nil, @from_folder, "#{@source} #{bibliography} -t json #{@options}")
+        @content = convert(nil, @from_folder, "#{@source} #{bibliography}-t json #{@options}")
 
         # read in JSON schema, use included schemata folder if no folder is given
         @schema = scheme
@@ -40,7 +43,7 @@ module Rakali
         @errors = validate
 
         # convert to destination document from JSON version of native AST
-        @output = convert(@content, @to_folder, "-f json #{bibliography} -o #{@destination} #{@options}")
+        @output = convert(@content, @to_folder, "-f json #{bibliography}-o #{@destination} #{@options}")
         Rakali.logger.abort_with "Fatal:", "Writing file #{@destination} failed" unless created?
 
         if @errors.empty?
@@ -69,7 +72,7 @@ module Rakali
 
       # abort with log message if non-zero exit_status
       unless exit_status.success?
-        Rakali.logger.error "Pandoc Error:", "Arguments #{args}."
+        Rakali.logger.error "Pandoc Args:", "#{args}."
         Rakali.logger.abort_with "Fatal:", "#{captured_stderr}."
       end
 
@@ -109,11 +112,6 @@ module Rakali
 
       # file was created in the last 5 seconds
       Time.now - File.mtime("#{@to_folder}/#{@destination}") < 5
-    end
-
-    def options
-      opts = @config.fetch('options') || {}
-      opts.map { |k,v| "--#{k}=#{v}" }.join(" ")
     end
 
     def from_json(string)
