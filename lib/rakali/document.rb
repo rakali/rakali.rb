@@ -31,7 +31,7 @@ module Rakali
         @options = options.map { |k,v| "--#{k}='#{v}'" }.join(" ")
 
         # add pandoc variables from config
-        variables = @config.fetch('variables') || {}
+        variables = @config.fetch('variables', nil) || {}
         @variables = variables.map { |k,v| "--variable #{k}=#{v}" }.join(" ")
 
         # use citeproc-pandoc if citations flag is set
