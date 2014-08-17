@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Citeproc",
+  "description": "Included citations using Citeproc and the Citation Style Language (CSL)",
+
+  "definitions": {
+    "references": {
+      "type": "object",
+      "properties": {
+        "c": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "c": {
+                  "type": "object",
+                  "properties": {
+                    "id": {"type": "object"},
+                    "type": {"type": "object"},
+                    "author": {"type": "object"},
+                    "title": {"type": "object"},
+                    "container-title": {"type": "object"},
+                    "issued": { "$ref": "#/definitions/date-parts" },
+                    "page": {"type": "object"},
+                    "volume": {"type": "object"}
+                  },
+                  "required": ["id","issued"]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "date-parts": {
+      "type": "object",
+      "properties": {
+        "c": {
+          "type": "object",
+          "properties": {
+            "year": {"type": "object"},
+            "month": {"type": "object"},
+            "day": {"type": "object"}
+          },
+          "required": ["year"]
+        }
+      }
+    }
+  },
+
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "unMeta": {
+          "type": "object",
+          "properties": {
+            "bibliography": {"type": "object"},
+            "references": { "$ref": "#/definitions/references" },
+            "csl": {"type": "object"},
+            "citation-abbreviations": {"type": "object"}
+          },
+          "anyOf": [
+            {
+              "bibliography": {"type": "object"},
+              "required": ["bibliography"]
+            },
+            {
+              "references": { "$ref": "#/definitions/references" },
+              "required": ["references"]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "t": {"enum": ["Div","Header"]},
+            "c": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "string",
+                      "enum": ["abstract","references"]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

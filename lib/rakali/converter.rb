@@ -31,7 +31,8 @@ module Rakali
         from_folder = @config.fetch('from').fetch('folder')
         from_format = @config.fetch('from').fetch('format')
         documents = Dir.glob("#{from_folder}/*.#{from_format}")
-        @documents = documents.map { |document| Rakali::Document.new(document, @config) }
+        puts documents
+        documents.each { |document| Rakali::Document.new(document, @config) }
       rescue KeyError => e
         Rakali.logger.abort_with "Fatal:", "Configuration #{e.message}."
       rescue => e

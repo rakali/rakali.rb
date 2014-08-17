@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "JATS",
+  "description": "Journal Article Tagging Suite (JATS)",
+
+  "definitions": {
+    "authors": {
+      "type": "object"
+    },
+    "article": {
+      "type": "object",
+       "properties": {
+        "c": {
+          "type": "object",
+          "properties": {
+            "doi": {"type": "object"}
+          },
+          "required": ["doi"]
+        }
+      }
+    },
+    "journal": {
+      "type": "object",
+      "properties": {
+        "c": {
+          "type": "object",
+          "properties": {
+            "title":        {"type": "object"},
+            "eissn":        {"type": "object"},
+            "publisher-id": {"type": "object"}
+          },
+          "required": ["title","eissn","publisher-id"]
+        }
+      }
+    },
+    "publisher": {
+      "type": "object",
+      "properties": {
+        "c": {
+          "type": "object",
+          "properties": {
+            "name": {"type": "object"}
+          },
+          "required": ["name"]
+        }
+      }
+    }
+  },
+
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "unMeta": {
+          "type": "object",
+          "properties": {
+            "title": {"type": "object"},
+            "authors": { "$ref": "#/definitions/authors" },
+            "article": { "$ref": "#/definitions/article" },
+            "journal": { "$ref": "#/definitions/journal" },
+            "publisher": { "$ref": "#/definitions/publisher" }
+          },
+          "required": ["title","authors","article","journal","publisher"]
+        }
+      }
+    },
+    {
+      "type": "array"
+    }
+  ]
+}

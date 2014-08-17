@@ -20,7 +20,7 @@ module Rakali
         @destination = @source.sub(/\.#{@from_format}$/, ".#{@to_format}")
 
         # convert source document into JSON version of native AST
-        @content = convert(nil, "#{@from_folder}/#{@source} -t json")
+        @content = convert(nil, @from_folder, "#{@source} -t json")
 
         # read in JSON schema
         @schema = IO.read(@config.fetch('schema'))
@@ -29,7 +29,7 @@ module Rakali
         @errors = validate
 
         # convert to destination document from JSON version of native AST
-        @output = convert(@content, "-f json -o #{@to_folder}/#{@destination}")
+        @output = convert(@content, @to_folder, "-f json -o #{@destination}")
         Rakali.logger.abort_with "Fatal:", "Writing file #{@destination} failed" unless created?
 
         if @errors.empty?
@@ -44,8 +44,8 @@ module Rakali
       end
     end
 
-    def convert(string = nil, args)
-      Open3::popen3("pandoc #{args}") do |stdin, stdout, stderr, wait_thr|
+    def convert(string = nil, dir, args)
+      Open3::popen3("pandoc #{args}", chdir: dir) do |stdin, stdout, stderr, wait_thr|
         unless string.nil?
           stdin.puts string
           stdin.close
