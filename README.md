@@ -4,6 +4,7 @@ rakali.rb
 [![Build Status](https://travis-ci.org/rakali/rakali.rb.svg)](https://travis-ci.org/rakali/rakali.rb)
 [![Gem Version](https://badge.fury.io/rb/rakali.svg)](http://badge.fury.io/rb/rakali)
 [![Code Climate](https://codeclimate.com/github/rakali/rakali.rb.png)](https://codeclimate.com/github/rakali/rakali.rb)
+[![Test Coverage](https://codeclimate.com/github/rakali/rakali.rb/badges/coverage.svg)](https://codeclimate.com/github/rakali/rakali.rb)
 
 Rakali is a wrapper for the [Pandoc](http://johnmacfarlane.net/pandoc/) document converter with the following features:
 
