@@ -4,6 +4,7 @@ from:
 to:
   format: html
 merge: false
+strict: true
 options:
   latex-engine: xelatex
 variables:

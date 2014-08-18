@@ -20,7 +20,7 @@ namespace :repo do
     # Commit and push to github
     sh "git add --all ."
     sh "git commit -m 'Committing converted files.'"
-    sh "git push https://${GH_TOKEN}@github.com/rakali/rakali.rb master --quiet"
+    sh "git push https://${GH_TOKEN}@github.com/rakali/rakali.rb master"
     puts "Pushed converted files to repo"
   end
 end
