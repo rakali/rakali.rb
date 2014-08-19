@@ -3,7 +3,7 @@
 module Rakali
   class Document
 
-    attr_accessor :config, :source, :destination, :content, :schema, :errors, :options, :variables, :to_folder
+    attr_accessor :config, :source, :destination, :content, :schema, :errors, :options, :variables, :filters, :to_folder
 
     def initialize(document, config)
       begin
@@ -19,11 +19,12 @@ module Rakali
         if document.is_a?(Array)
           @source = document.map { |file| File.basename(file) }.join(" ")
           @destination = "#{File.basename(@from_folder)}.#{@to_format}"
-          puts @destination
+          content = document.map { |file| IO.read(file) }.join("\n\n")
         else
           # otherwise use source name with new extension for destination filename
           @source = File.basename(document)
           @destination = @source.sub(/\.#{@from_format}$/, ".#{@to_format}")
+          content = IO.read(document)
         end
 
         # add pandoc options from config
@@ -34,11 +35,16 @@ module Rakali
         variables = @config.fetch('variables', nil) || {}
         @variables = variables.map { |k,v| "--variable #{k}='#{v}'" }.join(" ")
 
+        # add pandoc filters from config
+        filters = @config.fetch('filters', nil) || []
+        @filters = filters.map { |v| "--filter=#{v}" }.join(" ")
+
         # use citeproc-pandoc if citations flag is set
         bibliography = @config.fetch('citations') ? "-f citeproc-pandoc " : ""
 
         # convert source document into JSON version of native AST
-        @content = convert(nil, @from_folder, "#{@source} #{bibliography}-t json #{@options} #{@variables}")
+        # read in document and parse to Pandoc via STDIN to allow filenames with spaces
+        @content = convert(content, @from_folder, "#{@source} #{bibliography}-t json #{@options} #{@variables} #{@filters}")
 
         # read in JSON schema, use included schemata folder if no folder is given
         @schema = scheme
@@ -47,7 +53,7 @@ module Rakali
         @errors = validate
 
         # convert to destination document from JSON version of native AST
-        @output = convert(@content, @to_folder, "-f json #{bibliography}-o #{@destination} #{@options} #{@variables}")
+        @output = convert(@content, @to_folder, "-f json #{bibliography}-o #{@destination} #{@options} #{@variables} #{@filters}")
         Rakali.logger.abort_with "Fatal:", "Writing file #{@destination} failed" unless created?
 
         if @errors.empty?
