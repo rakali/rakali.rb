@@ -1,10 +1,10 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Jekyll",
-  "description": "Jekyll static site generator",
+  "title": "Pandoc title block",
+  "description": "Metadata in Pandoc title block",
 
   "definitions": {
-    "tags": {
+    "author": {
       "type": "object",
       "properties": {
         "c": {"type": "array"}
@@ -21,12 +21,10 @@
           "type": "object",
           "properties": {
             "title": {"type": "object"},
-            "author": {"type": "object"},
-            "date": {"type": "object"},
-            "layout": {"type": "object"},
-            "tags": { "$ref": "#/definitions/tags" }
+            "author": { "$ref": "#/definitions/author" },
+            "date": {"type": "object"}
           },
-          "required": ["title", "date", "layout"]
+          "required": ["title", "author", "date"]
         }
       }
     },

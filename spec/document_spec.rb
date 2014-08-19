@@ -39,9 +39,10 @@ describe Rakali::Document do
         { 'from' => { 'folder' => fixture_path }, 'schema' => 'jekyll.json' })
       subject = Rakali::Document.new(document, config)
       subject.valid?.should be_falsey
-      subject.errors.length.should == 2
-      subject.errors.first.should match("The property '#/0/unMeta' did not contain a required property of 'title'")
-      subject.errors.last.should match("The property '#/0/unMeta' did not contain a required property of 'layout'")
+      subject.errors.length.should == 3
+      subject.errors[0].should match("The property '#/0/unMeta' did not contain a required property of 'title'")
+      subject.errors[1].should match("The property '#/0/unMeta' did not contain a required property of 'date'")
+      subject.errors[2].should match("The property '#/0/unMeta' did not contain a required property of 'layout'")
     end
 
     it "should not validate with empty input and extended schema and raise error" do
