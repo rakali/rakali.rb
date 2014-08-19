@@ -1,6 +1,8 @@
 ---
 layout: post
 title: What is a DOI?
+author: Martin Fenner
+date: August 6, 2014
 tags: [doi, wikimania]
 ---
 

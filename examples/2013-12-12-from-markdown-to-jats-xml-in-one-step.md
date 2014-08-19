@@ -1,6 +1,8 @@
 ---
 layout: post
 title: "From Markdown to JATS XML in one Step"
+author: Martin Fenner
+date: December 12, 2013
 tags: [markdown, jats, pandoc]
 ---
 

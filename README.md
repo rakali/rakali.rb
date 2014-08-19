@@ -29,7 +29,7 @@ rakali convert .rakali.yml
 
 The default configuration looks like this:
 
-```
+```yaml
 from:
   folder:
   format: md
@@ -52,6 +52,27 @@ Validation against **JSON Schema** also works directly with Pandoc, generate a J
 
 To integrate rakali into a continuous integration environment such as [Travis CI](https://travis-ci.org), add a configuration file (e.g. `.rakali.yml`) into the root folder of your repo, install Pandoc and the rakali gem and run `rakali convert .rakali.yml`. Look at `.travis.yml`, `.rakali.yml` and the `examples` folder in this repo for a working example.
 
+## Options and variables
+
+Include Pandoc [options and variables](http://johnmacfarlane.net/pandoc/README.html) in the yaml input file:
+
+```yaml
+options:
+  latex-engine: xelatex
+variables:
+  documentclass: article
+```
+
+## Filters
+
+Rakali can use Pandoc [filters](http://johnmacfarlane.net/pandoc/scripting.html) and uses the same conventions: they can be written in any language as long as the files are executable and they use Pandoc JSON as input and output format. Rakali includes the `behead2.hs` example from the Pandoc documentation, for filters that are not part of rakali include the path. Filters are processed in the order they are listed.
+
+```yaml
+filters:
+  - behead2.hs
+  - your_folder/caps.py
+```
+
 ## Feedback
 
 This is an early release version. Please provide feedback via the [issue tracker](https://github.com/rakali/rakali.rb/issues).
@@ -63,6 +84,9 @@ This is an early release version. Please provide feedback via the [issue tracker
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+## Release notes
+Are [here](releases.md).
 
 ## License
 [MIT License](LICENSE).

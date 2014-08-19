@@ -1,9 +1,9 @@
 from:
   folder: examples
-  format: docx
+  format: md
 to:
-  folder: output
-  format: pdf
+  folder: examples
+  format: html
 schema: title_block.json
 merge: false
 strict: true

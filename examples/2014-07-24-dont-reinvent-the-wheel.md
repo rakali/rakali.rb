@@ -1,11 +1,13 @@
 ---
 layout: post
 title: Don't Reinvent the Wheel
+author: Martin Fenner
+date: July 24, 2014
 tags: [citeproc, crossref]
 ---
 In a [post last week](/2014/07/18/roads-not-stagecoaches/) I talked about roads and stagecoaches, and how work on scholarly infrastructure can often be more important than building customer-facing apps. One important aspect of that infrastruture work is to not duplicate efforts.<!--more-->
 
-![Image by Cocoabiscuit [on Flickr](http://www.flickr.com/photos/jfgallery/5673321593/)](/images/5673321593_e6a7faa36d_z.jpg)
+![Image by Cocoabiscuit [on Flickr](http://www.flickr.com/photos/jfgallery/5673321593/)](images/5673321593_e6a7faa36d_z.jpg)
 
 A good example is information (or metadata) about scholarly publications. I am the technical lead for the open source [article-level metrics (ALM) software](http://articlemetrics.github.io/). This software can be used in different ways, but most people use it for tracking the metrics of scholarly articles, with articles that have DOIs issued by CrossRef. The ALM software needs three pieces of information for every article: **DOI**, **publication date**, and **title**. This information can be entered via a web interface, but that is of course not very practical for adding dozens or hundreds of articles at a time. The ALM software has therefore long supported the import of multiple articles via a text file and the command line.
 
@@ -27,7 +29,7 @@ Funder (via FundRef) information is also included, but is still incomplete. Anot
 
 For my specific use case I wanted an API call that returns all articles published by PLOS (or any other publisher) in the last day which I can then run regularly. To get all DOIs from a specific publisher, use their CrossRef member ID - DOI prefixes don't work, as publishers can own more than one DOI prefix. To make this task a little easier I built a CrossRef member search interface into the ALM application:
 
-![](/images/crossref_api.png)
+![](images/crossref_api.png)
 
 We can filter API responses by publication date, but it is a better idea to use the update date, as it is possible that the metadata have changed, e.g. a correction of the title. We also want to increase the number of results per page (using the `rows` parameter). The final API call for all DOIs updated by PLOS since the beginning of the week would be
 
