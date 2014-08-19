@@ -36,8 +36,7 @@ module Rakali
         @variables = variables.map { |k,v| "--variable #{k}='#{v}'" }.join(" ")
 
         # add pandoc filters from config
-        filters = @config.fetch('filters', nil) || []
-        @filters = filters.map { |v| "--filter=#{v}" }.join(" ")
+        @filters = filter
 
         # use citeproc-pandoc if citations flag is set
         bibliography = @config.fetch('citations') ? "-f citeproc-pandoc " : ""
@@ -98,6 +97,18 @@ module Rakali
         schemata_folder = File.expand_path("../../../schemata", __FILE__)
         IO.read("#{schemata_folder}/#{schema}")
       end
+    end
+
+    def filter
+      filters = @config.fetch('filters', nil) || []
+      filters.map do |f|
+        if f.include?("/")
+          "--filter=#{f}"
+        else
+          filters_folder = File.expand_path("../../../filters", __FILE__)
+          "--filter=#{filters_folder}/#{f}"
+        end
+      end.join(" ")
     end
 
     def validate
