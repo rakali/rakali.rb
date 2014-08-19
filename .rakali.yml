@@ -1,15 +1,13 @@
 from:
   folder: examples
-  format: md
+  format: docx
 to:
   folder: examples
-  format: html
-schema: title_block.json
+  format: md
+schema: default.json
 merge: false
 strict: true
 options:
   latex-engine: xelatex
 variables:
   documentclass: article
-filters:
-  - behead2.hs
