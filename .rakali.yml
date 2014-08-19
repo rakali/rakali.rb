@@ -2,11 +2,14 @@ from:
   folder: examples
   format: docx
 to:
-  format: html
+  folder: output
+  format: pdf
+schema: title_block.json
 merge: false
 strict: true
 options:
   latex-engine: xelatex
 variables:
-  mainfont: 'Minion Pro'
-  sansfont: 'Myriad Pro'
+  documentclass: article
+filters:
+  - behead2.hs
